@@ -1,0 +1,122 @@
+一. 概述: 
+	目的: 掌握面向对象程序设计的基础和OOP设计方法要领
+	特点:
+		面向对象: 第四代语言
+		可移植性(与平台、芯片无关): 程序和类库, 编译器由Java实现, 运行器由标准C实现, 解释器直接对Java字节码"解释执行"
+		多线程: 逻辑同时, 而非物理同时
+		安全, 稳定, 极为健壮
+	动机: “Write Once, Run Anywhere”
+	编译: 编译器不将变量和方法的引用编译为数值引用, 也不确定执行过程中的内存分布, 而是将这些符号引用信息保留在一种拓展名为.class的字节码文件中, 这种文件的最大特点就是不包含硬件信息, 该文件不能在机器上运行. 解释是通过Java虚拟机读取字节码文件, 然后将其转化为本地指令. 过程: 代码的装入、检验和执行. 平台无关性和安全性正是因为Java字节码的设计
+
+二: 基础: 
+	数据类型: 
+		分类: 基本(简单), 复合(类, 接口)
+		注意: 
+			1. 整型都有符号, 0表示八进制, 0x表示十六进制
+			2. 浮点数缺省为double类型(64位双精度), float在末尾加L
+			3. char是16位(2字节)无符号数据, Unicode字符集采用双字节对字符编码
+			4. 用""代表String类型, 非基本类型, 为对象类型, 转义序列适用("123\n456");
+			5. 逻辑类型小写(与C++不同), boolean flag = true;
+			6. 基本数据类型提供默认值(方法中定义的除外), 并且提供对应的封装类
+		转换: (byte, short, char)--int--long--float--double
+			注意:
+				1. 对short s = s + 1;而言, s = s + 1;(✖) 与 s += 1;(✔) 的区别
+				2. char型数据和整型数据运算结果的精度是int. 如: byte x = 7; 'B'+x的结果是int型
+	文件名: 
+		标识符: 以字母开头, 符号只允许"下划线_"和"美元$"
+		保留字: 不可用于命名, true、false和null小写, 无sizeof运算符, goto和const为保留但无意义的关键字
+	运算符: 
+		分类: 算数(-可为一元运算符), 逻辑, 关系, 赋值, 位
+		语句是程序的组成成分, 表达式是语句的组成成分
+		位运算的应用: 清零: 和"零"按位"与"; 乘2: 左移"<<"一位; 交换变量: 按位"^"; 加密: "^";
+	流程结构: 顺序, 分支(switch只能是byte, char, short和int), 循环
+		break与continue: break为退出本次所有循环, continue退出此次循环
+
+三: 面向对象: 
+	基本特征: 封装, 继承, 多态
+		1. 封装: 目的是将使用者和设计者分开
+		2. 继承: 是OOP中一种有已有的类创建新类的机制
+			1. 先父成员, 先static成员, 先变量后方法
+			2. 无条件继承父类无参构造方法, super放在第一句继承有参构造方法
+			3. 同名变量用super引用, 故对子类实例赋值时, 不影响父类属性值
+			4. 覆盖父类方法时, 不能缩小范围
+		3. 多态: 编译时(重载), 运行时(父子)
+			1. 重载: 类中的多个方法, 参数个数、类型或返回类型不同
+			2. 重写: 返回值和形参都不能改变。即外壳不变，核心重写
+			3. this与super
+			4. 父类和子类有同名的方法, 子类可以屏蔽父类方法
+			5. 对象属于哪个类判断: instanceof
+	抽象类(作模版): 不是用来描绘对象的, 不能实例化, (只有方法说明, 没有方法体), 可以有非抽象方法
+	接口(作标准或能力): 特殊的抽象类, 不能有非abstract方法(public abstract)和变量(public static final), 声明方法时不能有很多修饰符(native、static、final、synchronized、private、protected), 体现了多态性和高内聚低耦合的设计思想, 如图: 
+	访问权限: 如图
+		1. protected(二重性): 同一包中其他类或其他包中其子类可见
+		2. 默认(包访问性): 只能被同一个包中的代码访问
+		
+四: 异常处理: 
+	处理方法: 
+		1. try{}catch(Exception e){}finally: 处理异常
+			try中若发生异常, 则运行中断并抛出"异常类对象", 若属于catch()括号内欲捕获的异常类, 则catch进行捕获并进入catch块里运行, 无论catch是否执行, finally一定会执行
+		2. throws Exception: 抛出异常, 由调用它的方法进行处理
+		
+五: GUI:
+	主体: 
+		1. 图形化界面组件(java.awt): 窗口、按钮、菜单等
+			1. 标签(Label): 在界面上显示一行文字, void setText(String s), String getText()
+			2. 按钮(Button): 点击激发ActionEvent时间, 使用ActionListener接口监听、处理时间
+		2. 容器: 实现组件的管理、布局管理
+			1. Panel容器必须放在Frame中才能显示
+			2. 使用JFrame时, 要先getContentPane
+		3. 布局管理器: 安排图形化界面的位置
+			1. FlowLayout(Panel默认): 按添加顺序从左到右排列, 每行居中
+			2. BorderLayout(Window-Frame、Dialog默认): 按容器空间分为东西南北中
+			3. CardLayout: 可容纳多个组件, 每次取最上面一个
+			4. GridLayout: 大小相同, 推荐使用容器嵌套
+		4. Graphics: 在组件上进行图形绘制所使用的图形环境父类
+		5. 时间处理对象(java.awt.event): 用来处理图形化界面组件所触发的事件(ActionEvent), 事件监听器实现监听器接口, 在将事件监听器绑定到事件源上, 当事件源产生交互事件, 事件监听器(ActionListener)接受并处理事件, 如图: 
+			1. ActionEvent: ActionListener -> actionPerformed(ActionEvent)
+			2. KeyEvent(键盘): KeyListener -> keyPressed, keyReleased, keyTyped
+			3. MouseEvent(鼠标): MouseMotionListener/MouseListener
+	步骤: 
+		1. 创建窗体类(extends Frame): 设置标题->大小->位置->显示窗口(f.setVisible: true;)
+		2. 创建容器对象: 设置容器的布局, 将Panel添加(add)到Frame中
+		3. 创建组件: 将组件放入Panel中
+		4. 实现事件处理: 实现事件处理接口并完成接口内所有方法->创建时间接听器对象->绑定到组件
+
+六: 工具类和算法
+	内存模型: 寄存器, 堆, 栈, 静态存储, 固态存储, 非内存存储
+		1. 栈: 仅次于寄存器的最快、最有效率的分配内存的方法, 存储: 对象的引用
+		2. 堆: 存储: new出来的对象
+		3. 静态存储: 固定位置, 程序运行期间都能访问, 存储: static修饰的元素
+	示例:
+		1. People p = new People();
+			1. 在栈中建立一个p对象的引用, 也就是People类型的一个对象(引用)
+			2. new运算符为age和name的成员变量在堆中分配内存后, 返回一个引用给p, 即返回地址给p
+			3. 如图: 
+		2. People[] peopleArray = new People[100]; peopleArray[0] = new People();
+			1. People[] poapleArray -> 系统为变量peopleArray分配了一个引用空间
+			2. People[] peopleArray = new People[100] -> 系统在内存中分配了一个数组对象, 并把数组引用赋给变量peopleArray
+			3. peopleArray[0] = new People() -> new对象同上
+			4. 如图: 
+	String类: 
+		分类: 常量(值不变, 用""括起来)与变量(new String())
+		常用方法: charAt(int index), length(), equals(Object anObject), equalsIgnoreCase(String s)
+		区别: 当是常量与变量比较时, 可以用==; 而变量与变量比较时, 只能用equals(推荐)--有时要重写
+	内部类: 
+	数组: 
+		1. 先定义后使用的类型相同且有序的对象, 可以动态初始化(不指定个数)
+		2. 声明仅为数组指定了数组名和元素的数据类型, 并没有分配空间, new之后才分配内存
+		3. 复合型数组: 县创建数组本身, 在分布创建各个元素, 即两次new对象
+	算法: 选择排序(最小的放前面), 冒泡排序(小数上浮, 大叔下沉), 快速排序
+	容器类: Vector, List, Map
+
+七: 多线程: 
+	1. 动机: 多个功能同时执行, 独立完成各自的功能, 互不干扰
+	2. 实现: 并发(来回切换), 并行(同时执行)
+	3. 过程: 就绪(线程建立, 尚未启动)->可运行(启动执行)->不可运行(阻塞, 休眠)->终止(正常返回)
+	4. 实现
+		1. 继承Thread类, 并重写run方法, 最后调用start方法
+		2. 实现Runnable接口, 并重写run方法, 最后调用start方法 	(注意构造方法中的参数)
+	5. 注意: 当要访问同一个资源时, 需要加锁(synchronized)
+
+八: I/O流
+	1. 核心: 读入, 写出
